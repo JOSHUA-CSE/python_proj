@@ -1,0 +1,43 @@
+{% extends 'courses/base.html' %}
+
+{% block title %}Dashboard - Online Learning Portal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Welcome to Your Dashboard</h1>
+        
+        {% if user.is_staff %}
+            <h2>Your Teaching Courses</h2>
+        {% else %}
+            <h2>Your Enrolled Courses</h2>
+        {% endif %}
+
+        <div class="row">
+            {% for course in courses %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">{{ course.title }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ course.description|truncatewords:30 }}</p>
+                            <a href="{% url 'course_detail' course.id %}" class="btn btn-primary">View Course</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        {% if user.is_staff %}
+                            You haven't created any courses yet.
+                        {% else %}
+                            You haven't enrolled in any courses yet.
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %} 
